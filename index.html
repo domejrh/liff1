@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Food Online</title>
+    <title>Food Order Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,72 +14,119 @@
         }
 
         h1 {
+            text-align: center;
             color: #333;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
         }
 
         .food-item {
-            margin-bottom: 15px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin: 15px;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
+            .food-item img {
+                width: 200px;
+                height: 150px;
+                object-fit: cover;
+            }
+
+            .food-item h3 {
+                margin: 10px 0;
+                font-size: 20px;
+                color: #333;
+            }
+
+            .food-item p {
+                font-size: 18px;
+                margin: 10px 0;
+            }
 
         input[type="number"] {
-            width: 60px;
+            width: 50px;
             padding: 5px;
-            margin-right: 10px;
         }
 
-        input[type="submit"] {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
+        .basket-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-            input[type="submit"]:hover {
-                background-color: #218838;
+            .basket-container h2 {
+                color: #333;
             }
+
+        .total {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #28a745;
+        }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Order Food Online</h1>
-        <form action="submit-order.html" method="POST">
-            <div class="food-item">
-                <label for="burger">Burger</label>
-                <input type="number" id="burger" name="burger" value="0" min="0">
-            </div>
-            <div class="food-item">
-                <label for="pizza">Pizza</label>
-                <input type="number" id="pizza" name="pizza" value="0" min="0">
-            </div>
-            <div class="food-item">
-                <label for="sushi">Sushi</label>
-                <input type="number" id="sushi" name="sushi" value="0" min="0">
-            </div>
-            <div class="food-item">
-                <label for="drink">Drink</label>
-                <input type="number" id="drink" name="drink" value="0" min="0">
-            </div>
-            <input type="submit" value="Submit Order">
-        </form>
+    <h1>Order Food Online</h1>
+
+    <div class="menu-container">
+        <div class="food-item" data-price="10">
+            <img src="https://via.placeholder.com/200x150.png?text=Burger" alt="Burger">
+            <h3>Burger</h3>
+            <p>$10</p>
+            <input type="number" value="0" min="0" onchange="updateTotal()">
+        </div>
+        <div class="food-item" data-price="12">
+            <img src="https://via.placeholder.com/200x150.png?text=Pizza" alt="Pizza">
+            <h3>Pizza</h3>
+            <p>$12</p>
+            <input type="number" value="0" min="0" onchange="updateTotal()">
+        </div>
+        <div class="food-item" data-price="15">
+            <img src="https://via.placeholder.com/200x150.png?text=Sushi" alt="Sushi">
+            <h3>Sushi</h3>
+            <p>$15</p>
+            <input type="number" value="0" min="0" onchange="updateTotal()">
+        </div>
+        <div class="food-item" data-price="5">
+            <img src="https://via.placeholder.com/200x150.png?text=Drink" alt="Drink">
+            <h3>Drink</h3>
+            <p>$5</p>
+            <input type="number" value="0" min="0" onchange="updateTotal()">
+        </div>
     </div>
 
+    <div class="basket-container">
+        <h2>Your Basket</h2>
+        <div class="total">Total: $0</div>
+    </div>
+
+    <script>
+        function updateTotal() {
+            let total = 0;
+            const items = document.querySelectorAll('.food-item');
+            items.forEach(item => {
+                const price = parseFloat(item.getAttribute('data-price'));
+                const quantity = item.querySelector('input[type="number"]').value;
+                total += price * quantity;
+            });
+            document.querySelector('.total').textContent = `Total: $${total.toFixed(2)}`;
+        }
+    </script>
+
 </body>
+
 </html>
 
