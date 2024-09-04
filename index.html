@@ -1,132 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Order Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        .menu-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .food-item {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            margin: 15px;
-            padding: 15px;
-            width: 250px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-            .food-item img {
-                width: 200px;
-                height: 150px;
-                object-fit: cover;
-            }
-
-            .food-item h3 {
-                margin: 10px 0;
-                font-size: 20px;
-                color: #333;
-            }
-
-            .food-item p {
-                font-size: 18px;
-                margin: 10px 0;
-            }
-
-        input[type="number"] {
-            width: 50px;
-            padding: 5px;
-        }
-
-        .basket-container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #fff;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-            .basket-container h2 {
-                color: #333;
-            }
-
-        .total {
-            font-size: 24px;
-            margin-top: 20px;
-            color: #28a745;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>My LIFF App</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
+    <p id="os"><b>OS:</b> </p>
+    <p id="language"><b>Language:</b> </p>
+    <p id="version"><b>Version:</b> </p>
+    <p id="isInClient"><b>isInClient:</b> </p>
+    <p id="accessToken"><b>AccessToken:</b> </p>
+    <img id="pictureUrl">
+    <p id="userId"><b>userId:</b> </p>
+    <p id="displayName"><b>displayName:</b> </p>
+    <p id="statusMessage"><b>statusMessage:</b> </p>
+    <p id="decodedIDToken"><b>email:</b> </p>
+    <p id="type"><b>type:</b> </p>
+    <p id="viewType"><b>viewType:</b> </p>
+    <p id="utouId"><b>utouId:</b> </p>
+    <p id="roomId"><b>roomId:</b> </p>
+    <p id="groupId"><b>groupId:</b> </p>
+    <p id="friendship"><b>isFriendship:</b> </p>
+    <p id="scanCode"><b>Code:</b> </p>
+    <p id="isLoggedIn"><b>isLoggedIn:</b> </p>
+    <p id="universalLink1"><b>Universal Link:</b> </p>
+    <p id="universalLink2"><b>Universal Link with Query params:</b> </p>
+    <p><a href="liff/path/?param=9">Link to Path</a></p>
 
-    <h1>Order Food Online</h1>
+    <button id="btnMsg" onclick="sendMsg()">Send Message</button>
+    <button id="btnShare" onclick="shareMsg()">Share Target Picker</button>
+    <button onclick="openWindow()">Open Window</button>
+    <button id="btnScanCode" onclick="scanCode()">Scan Code</button>
+    <button id="btnLogOut" onclick="logOut()">Log Out</button>
+    <button id="btnClose" onclick="closed()">Close</button>
 
-    <div class="menu-container">
-        <div class="food-item" data-price="10">
-            <img src="https://via.placeholder.com/200x150.png?text=Burger" alt="Burger">
-            <h3>Burger</h3>
-            <p>$10</p>
-            <input type="number" value="0" min="0" onchange="updateTotal()">
-        </div>
-        <div class="food-item" data-price="12">
-            <img src="https://via.placeholder.com/200x150.png?text=Pizza" alt="Pizza">
-            <h3>Pizza</h3>
-            <p>$12</p>
-            <input type="number" value="0" min="0" onchange="updateTotal()">
-        </div>
-        <div class="food-item" data-price="15">
-            <img src="https://via.placeholder.com/200x150.png?text=Sushi" alt="Sushi">
-            <h3>Sushi</h3>
-            <p>$15</p>
-            <input type="number" value="0" min="0" onchange="updateTotal()">
-        </div>
-        <div class="food-item" data-price="5">
-            <img src="https://via.placeholder.com/200x150.png?text=Drink" alt="Drink">
-            <h3>Drink</h3>
-            <p>$5</p>
-            <input type="number" value="0" min="0" onchange="updateTotal()">
-        </div>
-    </div>
-
-    <div class="basket-container">
-        <h2>Your Basket</h2>
-        <div class="total">Total: $0</div>
-    </div>
-
+    <script src="js/vconsole.min.js"></script>
     <script>
-        function updateTotal() {
-            let total = 0;
-            const items = document.querySelectorAll('.food-item');
-            items.forEach(item => {
-                const price = parseFloat(item.getAttribute('data-price'));
-                const quantity = item.querySelector('input[type="number"]').value;
-                total += price * quantity;
-            });
-            document.querySelector('.total').textContent = `Total: $${total.toFixed(2)}`;
-        }
+        var vConsole = new VConsole()
+        console.log("Hello World!")
     </script>
 
-</body>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+        function createUniversalLink() {
+            const link1 = liff.permanentLink.createUrl()
+            document.getElementById("universalLink1").append(link1)
 
+            liff.permanentLink.setExtraQueryParam('param=9')
+            const link2 = liff.permanentLink.createUrl()
+            document.getElementById("universalLink2").append(link2)
+        }
+
+        async function shareMsg() {
+            await liff.shareTargetPicker([
+                {
+                    type: "text",
+                    text: "This message was sent by ShareTargetPicker"
+                }
+            ])
+        }
+
+        function logOut() {
+            liff.logout()
+            window.location.reload()
+        }
+
+        function closed() {
+            liff.closeWindow()
+        }
+
+        async function scanCode() {
+            const result = await liff.scanCode()
+            document.getElementById("scanCode").append(result.value)
+        }
+
+        function openWindow() {
+            liff.openWindow({
+                url: "https://line.me",
+                external: true
+            })
+        }
+
+        async function getFriendship() {
+            const friend = await liff.getFriendship()
+            document.getElementById("friendship").append(friend.friendFlag)
+            if (!friend.friendFlag) {
+                if (confirm("คุณยังไม่ได้เพิ่ม Bot เป็นเพื่อน จะเพิ่มเลยไหม?")) {
+                    window.location = "https://line.me/R/ti/p/@YOUR-BOT-ID"
+                }
+            }
+        }
+
+        async function sendMsg() {
+            if (liff.getContext().type !== "none") {
+                await liff.sendMessages([
+                    {
+                        "type": "sticker",
+                        "stickerId": 1,
+                        "packageId": 1
+                    }
+                ])
+                alert("Message sent")
+            }
+        }
+
+        function getContext() {
+            if (liff.getContext() != null) {
+                document.getElementById("type").append(liff.getContext().type)
+                document.getElementById("viewType").append(liff.getContext().viewType)
+                document.getElementById("utouId").append(liff.getContext().utouId)
+                document.getElementById("roomId").append(liff.getContext().roomId)
+                document.getElementById("groupId").append(liff.getContext().groupId)
+            }
+        }
+
+        async function getUserProfile() {
+            const profile = await liff.getProfile()
+            document.getElementById("pictureUrl").src = profile.pictureUrl
+            document.getElementById("userId").append(profile.userId)
+            document.getElementById("statusMessage").append(profile.statusMessage)
+            document.getElementById("displayName").append(profile.displayName)
+            document.getElementById("decodedIDToken").append(liff.getDecodedIDToken().email)
+        }
+
+        function getEnvironment() {
+            document.getElementById("os").append(liff.getOS())
+            document.getElementById("language").append(liff.getLanguage())
+            document.getElementById("version").append(liff.getVersion())
+            document.getElementById("accessToken").append(liff.getAccessToken())
+            document.getElementById("isInClient").append(liff.isInClient())
+            if (liff.isInClient()) {
+                document.getElementById("btnLogOut").style.display = "none"
+            } else {
+                document.getElementById("btnMsg").style.display = "none"
+                document.getElementById("btnScanCode").style.display = "none"
+                document.getElementById("btnClose").style.display = "none"
+            }
+        }
+
+        async function main() {
+            liff.ready.then(() => {
+                document.getElementById("isLoggedIn").append(liff.isLoggedIn())
+                if (liff.isLoggedIn()) {
+                    getEnvironment()
+                    getUserProfile()
+                    getContext()
+                    getFriendship()
+                    createUniversalLink()
+                } else {
+                    liff.login()
+                }
+            })
+            await liff.init({ liffId: "YOUR-LIFF-ID" })
+        }
+        main()
+    </script>
+</body>
 </html>
 
