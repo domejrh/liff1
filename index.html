@@ -55,19 +55,23 @@
                 margin-bottom: 15px;
             }
 
-        .order-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .quantity-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-            .order-button:hover {
-                background-color: #45a049;
-            }
+        .quantity-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
 
         .cart-icon {
             position: fixed;
@@ -155,13 +159,21 @@
                 <img src="https://via.placeholder.com/150" alt="อาหาร 1">
                 <h2>อาหาร 1</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 1</p>
-                <button class="order-button" onclick="addToCart('อาหาร 1')">เพิ่มลงในตะกร้า</button>
+                <div class="quantity-selector">
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', -1)">-</button>
+                    <span id="quantity-อาหาร 1">0</span>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', 1)">+</button>
+                </div>
             </div>
             <div class="food-item">
                 <img src="https://via.placeholder.com/150" alt="อาหาร 2">
                 <h2>อาหาร 2</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 2</p>
-                <button class="order-button" onclick="addToCart('อาหาร 2')">เพิ่มลงในตะกร้า</button>
+                <div class="quantity-selector">
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', -1)">-</button>
+                    <span id="quantity-อาหาร 2">0</span>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', 1)">+</button>
+                </div>
             </div>
             <!-- เพิ่มรายการอาหารเพิ่มเติมที่นี่ -->
         </div>
@@ -181,12 +193,26 @@
     </div>
 
     <script>
-        let cart = [];
+        let cart = {};
 
-        function addToCart(foodName) {
-            cart.push(foodName);
-            document.getElementById('cart-count').innerText = cart.length;
+        function updateQuantity(foodName, change) {
+            if (!cart[foodName]) {
+                cart[foodName] = 0;
+            }
+            cart[foodName] = Math.max(cart[foodName] + change, 0);  // ไม่ให้ติดลบ
+
+            document.getElementById(`quantity-${foodName}`).innerText = cart[foodName];
+
+            updateCartCount();
             updateCartItems();
+        }
+
+        function updateCartCount() {
+            let totalItems = 0;
+            for (let food in cart) {
+                totalItems += cart[food];
+            }
+            document.getElementById('cart-count').innerText = totalItems;
         }
 
         function toggleCartPopup() {
@@ -197,19 +223,29 @@
         function updateCartItems() {
             const cartItems = document.getElementById('cart-items');
             cartItems.innerHTML = '';
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.innerText = item;
-                cartItems.appendChild(li);
-            });
+
+            for (let food in cart) {
+                if (cart[food] > 0) {
+                    const li = document.createElement('li');
+                    li.innerText = `${food} x ${cart[food]}`;
+                    cartItems.appendChild(li);
+                }
+            }
         }
 
         function submitOrder() {
-            if (cart.length > 0) {
-                alert('กำลังส่งคำสั่งอาหาร: ' + cart.join(', '));
+            const orderSummary = [];
+            for (let food in cart) {
+                if (cart[food] > 0) {
+                    orderSummary.push(`${food} x ${cart[food]}`);
+                }
+            }
+
+            if (orderSummary.length > 0) {
+                alert('กำลังส่งคำสั่งอาหาร: ' + orderSummary.join(', '));
                 // เพิ่มโค้ดการส่งคำสั่งอาหารไปยังเซิร์ฟเวอร์ของคุณที่นี่
-                cart = [];
-                document.getElementById('cart-count').innerText = cart.length;
+                cart = {};
+                updateCartCount();
                 updateCartItems();
                 toggleCartPopup();
             } else {
@@ -219,5 +255,7 @@
     </script>
 </body>
 </html>
+
+
 
 
