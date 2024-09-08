@@ -12,24 +12,20 @@
             background-color: #f4f4f4;
             position: relative;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
             gap: 20px;
         }
-
         .food-item {
             background-color: #fff;
             padding: 15px;
@@ -37,31 +33,26 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-
-            .food-item img {
-                max-width: 100%;
-                height: auto;
-                border-radius: 10px;
-                margin-bottom: 10px;
-            }
-
-            .food-item h2 {
-                font-size: 20px;
-                margin-bottom: 10px;
-            }
-
-            .food-item p {
-                font-size: 16px;
-                margin-bottom: 15px;
-            }
-
+        .food-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .food-item h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .food-item p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
         .quantity-selector {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 15px;
         }
-
         .quantity-button {
             background-color: #4CAF50;
             color: white;
@@ -72,7 +63,6 @@
             cursor: pointer;
             margin: 0 10px;
         }
-
         .cart-icon {
             position: fixed;
             bottom: 20px;
@@ -90,11 +80,9 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
-            .cart-icon:hover {
-                background-color: #e64a19;
-            }
-
+        .cart-icon:hover {
+            background-color: #e64a19;
+        }
         .cart-count {
             position: absolute;
             top: 5px;
@@ -109,7 +97,6 @@
             align-items: center;
             font-size: 14px;
         }
-
         .cart-popup {
             position: fixed;
             bottom: 80px;
@@ -120,21 +107,17 @@
             border-radius: 10px;
             display: none;
         }
-
-            .cart-popup h2 {
-                margin: 0;
-                margin-bottom: 10px;
-            }
-
-            .cart-popup ul {
-                list-style-type: none;
-                padding: 0;
-            }
-
-                .cart-popup ul li {
-                    margin-bottom: 10px;
-                }
-
+        .cart-popup h2 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+        .cart-popup ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart-popup ul li {
+            margin-bottom: 10px;
+        }
         .submit-order-button {
             background-color: #4CAF50;
             color: white;
@@ -145,10 +128,9 @@
             transition: background-color 0.3s ease;
             margin-top: 10px;
         }
-
-            .submit-order-button:hover {
-                background-color: #45a049;
-            }
+        .submit-order-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -160,9 +142,9 @@
                 <h2>อาหาร 1</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 1</p>
                 <div class="quantity-selector">
-                    <button class="quantity-button" onclick="updateQuantity('ข้าวกะเพราหมูชิ้น', -1)">-</button>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', -1)">-</button>
                     <span id="quantity-อาหาร 1">0</span>
-                    <button class="quantity-button" onclick="updateQuantity('ข้าวกะเพราหมูชิ้น', 1)">+</button>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', 1)">+</button>
                 </div>
             </div>
             <div class="food-item">
@@ -170,9 +152,9 @@
                 <h2>อาหาร 2</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 2</p>
                 <div class="quantity-selector">
-                    <button class="quantity-button" onclick="updateQuantity('ข้าวหมูกรอบคั่วพริกเกลือ', -1)">-</button>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', -1)">-</button>
                     <span id="quantity-อาหาร 2">0</span>
-                    <button class="quantity-button" onclick="updateQuantity('ข้าวหมูกรอบคั่วพริกเกลือ', 1)">+</button>
+                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', 1)">+</button>
                 </div>
             </div>
             <!-- เพิ่มรายการอาหารเพิ่มเติมที่นี่ -->
@@ -237,7 +219,7 @@
             const orderSummary = [];
             for (let food in cart) {
                 if (cart[food] > 0) {
-                    orderSummary.push(`${food} จำนวน ${cart[food]} ที่`);
+                    orderSummary.push(`${food} x ${cart[food]}`);
                 }
             }
 
@@ -255,7 +237,6 @@
     </script>
 </body>
 </html>
-
 
 
 
