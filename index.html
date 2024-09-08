@@ -209,7 +209,7 @@
             for (let food in cart) {
                 if (cart[food] > 0) {
                     const li = document.createElement('li');
-                    li.innerText = `${food} x ${cart[food]}`;
+                    li.innerText = `${food} จำนวน ${cart[food]} ที่`;
                     cartItems.appendChild(li);
                 }
             }
@@ -219,7 +219,7 @@
             const orderSummary = [];
             for (let food in cart) {
                 if (cart[food] > 0) {
-                    orderSummary.push(`${food} x ${cart[food]}`);
+                    orderSummary.push(`${food} จำนวน ${cart[food]} ที่`);
                 }
             }
 
