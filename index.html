@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            position: relative;
         }
 
         .container {
@@ -67,6 +68,83 @@
             .order-button:hover {
                 background-color: #45a049;
             }
+
+        .cart-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .cart-icon:hover {
+                background-color: #e64a19;
+            }
+
+        .cart-count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: white;
+            color: #ff5722;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .cart-popup {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            display: none;
+        }
+
+            .cart-popup h2 {
+                margin: 0;
+                margin-bottom: 10px;
+            }
+
+            .cart-popup ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+                .cart-popup ul li {
+                    margin-bottom: 10px;
+                }
+
+        .submit-order-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+            .submit-order-button:hover {
+                background-color: #45a049;
+            }
     </style>
 </head>
 <body>
@@ -77,50 +155,69 @@
                 <img src="https://via.placeholder.com/150" alt="อาหาร 1">
                 <h2>อาหาร 1</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 1</p>
-                <button class="order-button" onclick="order('อาหาร 1')">สั่งอาหารนี้</button>
+                <button class="order-button" onclick="addToCart('อาหาร 1')">เพิ่มลงในตะกร้า</button>
             </div>
             <div class="food-item">
                 <img src="https://via.placeholder.com/150" alt="อาหาร 2">
                 <h2>อาหาร 2</h2>
                 <p>คำอธิบายสั้น ๆ ของอาหาร 2</p>
-                <button class="order-button" onclick="order('อาหาร 2')">สั่งอาหารนี้</button>
+                <button class="order-button" onclick="addToCart('อาหาร 2')">เพิ่มลงในตะกร้า</button>
             </div>
-            <div class="food-item">
-                <img src="https://via.placeholder.com/150" alt="อาหาร 3">
-                <h2>อาหาร 3</h2>
-                <p>คำอธิบายสั้น ๆ ของอาหาร 3</p>
-                <button class="order-button" onclick="order('อาหาร 3')">สั่งอาหารนี้</button>
-            </div>
-            <div class="food-item">
-                <img src="https://via.placeholder.com/150" alt="อาหาร 4">
-                <h2>อาหาร 4</h2>
-                <p>คำอธิบายสั้น ๆ ของอาหาร 4</p>
-                <button class="order-button" onclick="order('อาหาร 4')">สั่งอาหารนี้</button>
-            </div>
+            <!-- เพิ่มรายการอาหารเพิ่มเติมที่นี่ -->
         </div>
     </div>
 
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <div class="cart-icon" onclick="toggleCartPopup()">
+        🛒
+        <div class="cart-count" id="cart-count">0</div>
+    </div>
+
+    <div class="cart-popup" id="cart-popup">
+        <h2>ตะกร้าของคุณ</h2>
+        <ul id="cart-items">
+            <!-- รายการอาหารในตะกร้าจะแสดงที่นี่ -->
+        </ul>
+        <button class="submit-order-button" onclick="submitOrder()">ส่งคำสั่งอาหาร</button>
+    </div>
+
     <script>
-        function initializeLiff() {
-            liff.init({
-                liffId: "YOUR_LIFF_ID" // ใส่ LIFF ID ของคุณ
-            }).then(() => {
-                console.log("LIFF initialized");
-            }).catch(err => {
-                console.error("LIFF initialization failed", err);
+        let cart = [];
+
+        function addToCart(foodName) {
+            cart.push(foodName);
+            document.getElementById('cart-count').innerText = cart.length;
+            updateCartItems();
+        }
+
+        function toggleCartPopup() {
+            const cartPopup = document.getElementById('cart-popup');
+            cartPopup.style.display = (cartPopup.style.display === 'none' || cartPopup.style.display === '') ? 'block' : 'none';
+        }
+
+        function updateCartItems() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                cartItems.appendChild(li);
             });
         }
 
-        function order(foodName) {
-            alert(`คุณได้เลือก: ${foodName}`);
-            // เพิ่มโค้ดส่งคำสั่งไปยังระบบสั่งอาหารของร้านที่นี่
+        function submitOrder() {
+            if (cart.length > 0) {
+                alert('กำลังส่งคำสั่งอาหาร: ' + cart.join(', '));
+                // เพิ่มโค้ดการส่งคำสั่งอาหารไปยังเซิร์ฟเวอร์ของคุณที่นี่
+                cart = [];
+                document.getElementById('cart-count').innerText = cart.length;
+                updateCartItems();
+                toggleCartPopup();
+            } else {
+                alert('ไม่มีรายการอาหารในตะกร้า');
+            }
         }
-
-        window.onload = function () {
-            initializeLiff();
-        };
     </script>
 </body>
 </html>
+
 
