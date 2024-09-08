@@ -3,94 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Service</title>
+    <title>Order Food</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
         }
 
         .container {
-            text-align: center;
-            background-color: #fff;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
-            .container h1 {
-                font-size: 24px;
-                margin-bottom: 20px;
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
+            gap: 20px;
+        }
+
+        .food-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+            .food-item img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 10px;
+                margin-bottom: 10px;
             }
 
-        .button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
+            .food-item h2 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .food-item p {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+        .order-button {
             background-color: #4CAF50;
             color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-            .button:hover {
+            .order-button:hover {
                 background-color: #45a049;
             }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>บริการร้านอาหาร</h1>
-        <button class="button" onclick="orderFood()">สั่งอาหาร</button>
-        <button class="button" onclick="callWaiter()">เรียกพนักงาน</button>
-        <button class="button" onclick="requestBill()">เช็คบิล</button>
+        <h1>เลือกเมนูอาหาร</h1>
+        <div class="grid">
+            <div class="food-item">
+                <img src="https://via.placeholder.com/150" alt="อาหาร 1">
+                <h2>อาหาร 1</h2>
+                <p>คำอธิบายสั้น ๆ ของอาหาร 1</p>
+                <button class="order-button" onclick="order('อาหาร 1')">สั่งอาหารนี้</button>
+            </div>
+            <div class="food-item">
+                <img src="https://via.placeholder.com/150" alt="อาหาร 2">
+                <h2>อาหาร 2</h2>
+                <p>คำอธิบายสั้น ๆ ของอาหาร 2</p>
+                <button class="order-button" onclick="order('อาหาร 2')">สั่งอาหารนี้</button>
+            </div>
+            <div class="food-item">
+                <img src="https://via.placeholder.com/150" alt="อาหาร 3">
+                <h2>อาหาร 3</h2>
+                <p>คำอธิบายสั้น ๆ ของอาหาร 3</p>
+                <button class="order-button" onclick="order('อาหาร 3')">สั่งอาหารนี้</button>
+            </div>
+            <div class="food-item">
+                <img src="https://via.placeholder.com/150" alt="อาหาร 4">
+                <h2>อาหาร 4</h2>
+                <p>คำอธิบายสั้น ๆ ของอาหาร 4</p>
+                <button class="order-button" onclick="order('อาหาร 4')">สั่งอาหารนี้</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        // Initialize LIFF
         function initializeLiff() {
             liff.init({
-                liffId: "2006214422-Kz3Rr06Y" // แทนที่ด้วย LIFF ID ของคุณ
+                liffId: "YOUR_LIFF_ID" // ใส่ LIFF ID ของคุณ
             }).then(() => {
-                console.log('LIFF initialized');
+                console.log("LIFF initialized");
             }).catch(err => {
-                console.error('LIFF initialization failed', err);
+                console.error("LIFF initialization failed", err);
             });
         }
 
-        // LIFF Functions
-        function orderFood() {
-            // ส่งข้อมูลการสั่งอาหารหรือเปิดหน้าสั่งอาหาร
-            alert("กำลังนำคุณไปสู่การสั่งอาหาร...");
-            // คุณสามารถเพิ่มการเชื่อมต่อ API ของร้านเพื่อส่งข้อมูลการสั่งอาหารได้ที่นี่
+        function order(foodName) {
+            alert(`คุณได้เลือก: ${foodName}`);
+            // เพิ่มโค้ดส่งคำสั่งไปยังระบบสั่งอาหารของร้านที่นี่
         }
 
-        function callWaiter() {
-            // ส่งการแจ้งเตือนเรียกพนักงาน
-            alert("กำลังเรียกพนักงาน...");
-            // สามารถเพิ่มการเชื่อมต่อ API ที่แจ้งเตือนพนักงานได้ที่นี่
-        }
-
-        function requestBill() {
-            // ส่งการขอเช็คบิล
-            alert("กำลังเรียกเช็คบิล...");
-            // สามารถเพิ่มการเชื่อมต่อ API ที่แจ้งพนักงานได้ที่นี่
-        }
-
-        // เริ่ม LIFF
         window.onload = function () {
             initializeLiff();
         };
     </script>
 </body>
 </html>
+
