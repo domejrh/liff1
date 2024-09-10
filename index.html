@@ -7,16 +7,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .container, .menu-page {
-            display: none;
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
         }
 
         .container {
@@ -25,8 +21,6 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
         }
 
             .container h1 {
@@ -51,80 +45,14 @@
             .button:hover {
                 background-color: #45a049;
             }
-
-        /* Page for showing menu items */
-        .menu-page {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-            .menu-page h1 {
-                width: 100%;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-        .menu-item {
-            background-color: #fff;
-            border-radius: 10px;
-            margin: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: calc(50% - 40px); /* Two columns with space */
-            box-sizing: border-box;
-        }
-
-            .menu-item img {
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-                margin-bottom: 10px;
-            }
-
-            .menu-item h3 {
-                margin: 0;
-            }
-
-            .menu-item p {
-                font-size: 14px;
-                color: #666;
-            }
     </style>
 </head>
 <body>
-
-    <!-- Main Menu (Service) Page -->
-    <div class="container" id="main-page">
+    <div class="container">
         <h1>บริการร้านอาหาร</h1>
         <button class="button" onclick="orderFood()">สั่งอาหาร</button>
         <button class="button" onclick="callWaiter()">เรียกพนักงาน</button>
         <button class="button" onclick="requestBill()">เช็คบิล</button>
-    </div>
-
-    <!-- Food Menu Page -->
-    <div class="menu-page" id="menu-page">
-        <h1>เมนูอาหาร</h1>
-        <div class="menu-item">
-            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 1">
-            <h3>อาหารจานที่ 1</h3>
-            <p>รายละเอียดอาหารจานที่ 1</p>
-        </div>
-        <div class="menu-item">
-            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 2">
-            <h3>อาหารจานที่ 2</h3>
-            <p>รายละเอียดอาหารจานที่ 2</p>
-        </div>
-        <div class="menu-item">
-            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 3">
-            <h3>อาหารจานที่ 3</h3>
-            <p>รายละเอียดอาหารจานที่ 3</p>
-        </div>
-        <div class="menu-item">
-            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 4">
-            <h3>อาหารจานที่ 4</h3>
-            <p>รายละเอียดอาหารจานที่ 4</p>
-        </div>
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -140,10 +68,10 @@
             });
         }
 
-        // Show Menu Page after user clicks 'สั่งอาหาร'
+        // LIFF Functions
         function orderFood() {
-            document.getElementById('main-page').style.display = 'none';
-            document.getElementById('menu-page').style.display = 'flex';
+            // เปลี่ยนไปยังหน้าสั่งอาหารใหม่
+            window.location.href = "https://www.example.com/menu"; // เปลี่ยนลิงก์เป็น URL ที่แสดงอาหาร
         }
 
         function callWaiter() {
@@ -154,10 +82,9 @@
             alert("กำลังเรียกเช็คบิล...");
         }
 
-        // Initialize LIFF on page load
+        // เริ่ม LIFF
         window.onload = function () {
             initializeLiff();
-            document.getElementById('main-page').style.display = 'flex';
         };
     </script>
 </body>
