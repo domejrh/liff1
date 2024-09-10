@@ -3,240 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Food</title>
+    <title>Restaurant Service</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            position: relative;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
-            gap: 20px;
-        }
-        .food-item {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .food-item img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        .food-item h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .food-item p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        .quantity-selector {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .quantity-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 20px;
-            cursor: pointer;
-            margin: 0 10px;
-        }
-        .cart-icon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #ff5722;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .cart-icon:hover {
-            background-color: #e64a19;
-        }
-        .cart-count {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: white;
-            color: #ff5722;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-        }
-        .cart-popup {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+
+        .container, .menu-page {
             display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .cart-popup h2 {
-            margin: 0;
-            margin-bottom: 10px;
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
         }
-        .cart-popup ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .cart-popup ul li {
-            margin-bottom: 10px;
-        }
-        .submit-order-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
+
+            .container h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
             border: none;
             border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 10px;
         }
-        .submit-order-button:hover {
-            background-color: #45a049;
+
+            .button:hover {
+                background-color: #45a049;
+            }
+
+        /* Page for showing menu items */
+        .menu-page {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
         }
+
+            .menu-page h1 {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .menu-item {
+            background-color: #fff;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(50% - 40px); /* Two columns with space */
+            box-sizing: border-box;
+        }
+
+            .menu-item img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+
+            .menu-item h3 {
+                margin: 0;
+            }
+
+            .menu-item p {
+                font-size: 14px;
+                color: #666;
+            }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>เลือกเมนูอาหาร</h1>
-        <div class="grid">
-            <div class="food-item">
-                <img src="https://via.placeholder.com/150" alt="อาหาร 1">
-                <h2>อาหาร 1</h2>
-                <p>คำอธิบายสั้น ๆ ของอาหาร 1</p>
-                <div class="quantity-selector">
-                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', -1)">-</button>
-                    <span id="quantity-อาหาร 1">0</span>
-                    <button class="quantity-button" onclick="updateQuantity('อาหาร 1', 1)">+</button>
-                </div>
-            </div>
-            <div class="food-item">
-                <img src="https://via.placeholder.com/150" alt="อาหาร 2">
-                <h2>อาหาร 2</h2>
-                <p>คำอธิบายสั้น ๆ ของอาหาร 2</p>
-                <div class="quantity-selector">
-                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', -1)">-</button>
-                    <span id="quantity-อาหาร 2">0</span>
-                    <button class="quantity-button" onclick="updateQuantity('อาหาร 2', 1)">+</button>
-                </div>
-            </div>
-            <!-- เพิ่มรายการอาหารเพิ่มเติมที่นี่ -->
+
+    <!-- Main Menu (Service) Page -->
+    <div class="container" id="main-page">
+        <h1>บริการร้านอาหาร</h1>
+        <button class="button" onclick="orderFood()">สั่งอาหาร</button>
+        <button class="button" onclick="callWaiter()">เรียกพนักงาน</button>
+        <button class="button" onclick="requestBill()">เช็คบิล</button>
+    </div>
+
+    <!-- Food Menu Page -->
+    <div class="menu-page" id="menu-page">
+        <h1>เมนูอาหาร</h1>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 1">
+            <h3>อาหารจานที่ 1</h3>
+            <p>รายละเอียดอาหารจานที่ 1</p>
+        </div>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 2">
+            <h3>อาหารจานที่ 2</h3>
+            <p>รายละเอียดอาหารจานที่ 2</p>
+        </div>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 3">
+            <h3>อาหารจานที่ 3</h3>
+            <p>รายละเอียดอาหารจานที่ 3</p>
+        </div>
+        <div class="menu-item">
+            <img src="https://via.placeholder.com/150" alt="อาหารจานที่ 4">
+            <h3>อาหารจานที่ 4</h3>
+            <p>รายละเอียดอาหารจานที่ 4</p>
         </div>
     </div>
 
-    <div class="cart-icon" onclick="toggleCartPopup()">
-        🛒
-        <div class="cart-count" id="cart-count">0</div>
-    </div>
-
-    <div class="cart-popup" id="cart-popup">
-        <h2>ตะกร้าของคุณ</h2>
-        <ul id="cart-items">
-            <!-- รายการอาหารในตะกร้าจะแสดงที่นี่ -->
-        </ul>
-        <button class="submit-order-button" onclick="submitOrder()">ส่งคำสั่งอาหาร</button>
-    </div>
-
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        let cart = {};
-
-        function updateQuantity(foodName, change) {
-            if (!cart[foodName]) {
-                cart[foodName] = 0;
-            }
-            cart[foodName] = Math.max(cart[foodName] + change, 0);  // ไม่ให้ติดลบ
-
-            document.getElementById(`quantity-${foodName}`).innerText = cart[foodName];
-
-            updateCartCount();
-            updateCartItems();
+        // Initialize LIFF
+        function initializeLiff() {
+            liff.init({
+                liffId: "YOUR_LIFF_ID" // แทนที่ด้วย LIFF ID ของคุณ
+            }).then(() => {
+                console.log('LIFF initialized');
+            }).catch(err => {
+                console.error('LIFF initialization failed', err);
+            });
         }
 
-        function updateCartCount() {
-            let totalItems = 0;
-            for (let food in cart) {
-                totalItems += cart[food];
-            }
-            document.getElementById('cart-count').innerText = totalItems;
+        // Show Menu Page after user clicks 'สั่งอาหาร'
+        function orderFood() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('menu-page').style.display = 'flex';
         }
 
-        function toggleCartPopup() {
-            const cartPopup = document.getElementById('cart-popup');
-            cartPopup.style.display = (cartPopup.style.display === 'none' || cartPopup.style.display === '') ? 'block' : 'none';
+        function callWaiter() {
+            alert("กำลังเรียกพนักงาน...");
         }
 
-        function updateCartItems() {
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-
-            for (let food in cart) {
-                if (cart[food] > 0) {
-                    const li = document.createElement('li');
-                    li.innerText = `${food} จำนวน ${cart[food]} ที่`;
-                    cartItems.appendChild(li);
-                }
-            }
+        function requestBill() {
+            alert("กำลังเรียกเช็คบิล...");
         }
 
-        function submitOrder() {
-            const orderSummary = [];
-            for (let food in cart) {
-                if (cart[food] > 0) {
-                    orderSummary.push(`${food} จำนวน ${cart[food]} ที่`);
-                }
-            }
-
-            if (orderSummary.length > 0) {
-                alert('กำลังส่งคำสั่งอาหาร: ' + orderSummary.join(', '));
-                // เพิ่มโค้ดการส่งคำสั่งอาหารไปยังเซิร์ฟเวอร์ของคุณที่นี่
-                cart = {};
-                updateCartCount();
-                updateCartItems();
-                toggleCartPopup();
-            } else {
-                alert('ไม่มีรายการอาหารในตะกร้า');
-            }
-        }
+        // Initialize LIFF on page load
+        window.onload = function () {
+            initializeLiff();
+            document.getElementById('main-page').style.display = 'flex';
+        };
     </script>
 </body>
 </html>
+
+
 
 
 
