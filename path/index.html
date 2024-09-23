@@ -3,198 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Ordering</title>
+    <title>สั่งอาหาร</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
             padding: 20px;
         }
 
-        .item {
-            background-color: #fff;
-            padding: 20px;
+        .menu-item {
+            background-color: white;
+            width: 45%;
+            margin: 10px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-            .item h3 {
-                margin-bottom: 10px;
+            .menu-item h3 {
+                margin: 10px 0;
             }
 
-        .quantity-controls {
+        .quantity-control {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             margin-top: 10px;
         }
 
-            .quantity-controls button {
-                padding: 10px;
-                font-size: 16px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .quantity-controls span {
+            .quantity-control button {
+                width: 30px;
+                height: 30px;
                 font-size: 18px;
+                margin: 0 10px;
             }
 
-        .cart-icon {
+        .cart {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background-color: #4CAF50;
             color: white;
-            padding: 15px;
             border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            font-size: 18px;
         }
 
         .cart-count {
-            background-color: #ff0000;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 50%;
-            font-size: 14px;
             position: absolute;
-            top: -10px;
-            right: -10px;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
         }
-
-        .cart-modal {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-            .cart-modal ul {
-                list-style-type: none;
-                padding: 0;
-            }
-
-            .cart-modal li {
-                padding: 10px 0;
-                border-bottom: 1px solid #ccc;
-            }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="item" data-id="1">
-            <h3>Pizza</h3>
-            <p>$10</p>
-            <div class="quantity-controls">
-                <button onclick="decreaseQuantity(1)">-</button>
-                <span id="quantity-1">0</span>
-                <button onclick="increaseQuantity(1)">+</button>
-            </div>
-        </div>
-        <div class="item" data-id="2">
-            <h3>Burger</h3>
-            <p>$8</p>
-            <div class="quantity-controls">
-                <button onclick="decreaseQuantity(2)">-</button>
-                <span id="quantity-2">0</span>
-                <button onclick="increaseQuantity(2)">+</button>
-            </div>
-        </div>
-        <!-- เพิ่มรายการอาหารเพิ่มเติมในรูปแบบเดียวกัน -->
+    <div class="menu-container" id="menuContainer">
+        <!-- Items จะถูกเพิ่มจาก JavaScript -->
     </div>
 
-    <!-- ไอคอนตะกร้า -->
-    <div class="cart-icon" onclick="openCart()">
-        <span class="cart-count" id="cart-count">0</span>
+    <div class="cart" onclick="viewCart()">
+        <span class="cart-count" id="cartCount">0</span>
         🛒
     </div>
 
-    <!-- Modal สำหรับแสดงรายการอาหารในตะกร้า -->
-    <div class="cart-modal" id="cart-modal">
-        <h3>รายการอาหารในตะกร้า</h3>
-        <ul id="cart-items">
-            <!-- รายการอาหารจะแสดงที่นี่ -->
-        </ul>
-        <button onclick="closeCart()">ปิด</button>
-    </div>
-
     <script>
-        let cart = {};
+        const menuItems = [
+            { id: 1, name: "อาหาร A", price: 100 },
+            { id: 2, name: "อาหาร B", price: 150 },
+            { id: 3, name: "อาหาร C", price: 120 },
+            { id: 4, name: "อาหาร D", price: 200 }
+        ];
 
-        // เพิ่มจำนวนอาหาร
+        let cart = [];
+
+        function renderMenu() {
+            const menuContainer = document.getElementById('menuContainer');
+            menuItems.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.classList.add('menu-item');
+                menuItem.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <p>ราคา: ${item.price} บาท</p>
+                        <div class="quantity-control">
+                            <button onclick="decreaseQuantity(${item.id})">-</button>
+                            <span id="quantity-${item.id}">0</span>
+                            <button onclick="increaseQuantity(${item.id})">+</button>
+                        </div>
+                    `;
+                menuContainer.appendChild(menuItem);
+            });
+        }
+
         function increaseQuantity(id) {
-            let quantity = document.getElementById(`quantity-${id}`);
-            let currentQuantity = parseInt(quantity.innerText);
-            currentQuantity++;
-            quantity.innerText = currentQuantity;
-            updateCart(id, currentQuantity);
-        }
-
-        // ลดจำนวนอาหาร
-        function decreaseQuantity(id) {
-            let quantity = document.getElementById(`quantity-${id}`);
-            let currentQuantity = parseInt(quantity.innerText);
-            if (currentQuantity > 0) {
-                currentQuantity--;
-                quantity.innerText = currentQuantity;
-                updateCart(id, currentQuantity);
-            }
-        }
-
-        // อัปเดตตะกร้า
-        function updateCart(id, quantity) {
-            if (quantity > 0) {
-                cart[id] = quantity;
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity++;
             } else {
-                delete cart[id];
+                const menuItem = menuItems.find(i => i.id === id);
+                cart.push({ ...menuItem, quantity: 1 });
             }
-            updateCartIcon();
+            document.getElementById(`quantity-${id}`).textContent = cart.find(i => i.id === id).quantity;
+            updateCartCount();
         }
 
-        // อัปเดตจำนวนรายการในตะกร้า
-        function updateCartIcon() {
-            let totalItems = Object.values(cart).reduce((a, b) => a + b, 0);
-            document.getElementById("cart-count").innerText = totalItems;
-        }
-
-        // เปิดหน้าต่างตะกร้า
-        function openCart() {
-            let cartModal = document.getElementById("cart-modal");
-            let cartItemsList = document.getElementById("cart-items");
-            cartItemsList.innerHTML = '';
-
-            for (let id in cart) {
-                let itemName = document.querySelector(`.item[data-id='${id}'] h3`).innerText;
-                let quantity = cart[id];
-                let listItem = `<li>${itemName} x ${quantity}</li>`;
-                cartItemsList.innerHTML += listItem;
+        function decreaseQuantity(id) {
+            const item = cart.find(i => i.id === id);
+            if (item && item.quantity > 0) {
+                item.quantity--;
+                document.getElementById(`quantity-${id}`).textContent = item.quantity;
+                if (item.quantity === 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+                updateCartCount();
             }
-
-            cartModal.style.display = 'block';
         }
 
-        // ปิดหน้าต่างตะกร้า
-        function closeCart() {
-            document.getElementById("cart-modal").style.display = 'none';
+        function updateCartCount() {
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = cartCount;
+        }
+
+        function viewCart() {
+            alert("คุณมีอาหารในตะกร้าดังนี้:\n" + cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n'));
         }
 
         function submitOrder() {
@@ -203,14 +154,14 @@
                 quantity: item.quantity
             }));
 
-            fetch('http://127.0.0.1:5001/back-end-senior/us-central1/createOrder', {  // ส่งข้อมูลไปยัง Backend
+            fetch('https://<YOUR_CLOUD_FUNCTION_URL>/createOrder', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userId: liff.getProfile().userId,  // ส่ง user ID จาก LINE profile
-                    orderItems: orderData  // ส่งข้อมูลรายการอาหาร
+                    userId: liff.getProfile().userId,  // LINE userId จาก LIFF profile
+                    orderItems: orderData
                 })
             }).then(response => {
                 if (response.ok) {
@@ -222,7 +173,10 @@
                 console.error("Error:", error);
             });
         }
-    </script>
 
+
+        renderMenu();
+    </script>
 </body>
 </html>
+
