@@ -196,6 +196,32 @@
         function closeCart() {
             document.getElementById("cart-modal").style.display = 'none';
         }
+
+        function submitOrder() {
+            const orderData = cart.map(item => ({
+                id: item.id,
+                quantity: item.quantity
+            }));
+
+            fetch('http://127.0.0.1:5001/back-end-senior/us-central1/createOrder', {  // ส่งข้อมูลไปยัง Backend
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: liff.getProfile().userId,  // ส่ง user ID จาก LINE profile
+                    orderItems: orderData  // ส่งข้อมูลรายการอาหาร
+                })
+            }).then(response => {
+                if (response.ok) {
+                    alert("สั่งอาหารเรียบร้อยแล้ว");
+                } else {
+                    alert("เกิดข้อผิดพลาดในการสั่งอาหาร");
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        }
     </script>
 
 </body>
