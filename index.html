@@ -29,9 +29,9 @@
             text-align: center;
         }
 
-            .menu-item h3 {
-                margin: 10px 0;
-            }
+        .menu-item h3 {
+            margin: 10px 0;
+        }
 
         .quantity-control {
             display: flex;
@@ -40,12 +40,12 @@
             margin-top: 10px;
         }
 
-            .quantity-control button {
-                width: 30px;
-                height: 30px;
-                font-size: 18px;
-                margin: 0 10px;
-            }
+        .quantity-control button {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            margin: 0 10px;
+        }
 
         .cart {
             position: fixed;
@@ -103,14 +103,14 @@
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('menu-item');
                 menuItem.innerHTML = `
-                        <h3>${item.name}</h3>
-                        <p>ราคา: ${item.price} บาท</p>
-                        <div class="quantity-control">
-                            <button onclick="decreaseQuantity(${item.id})">-</button>
-                            <span id="quantity-${item.id}">0</span>
-                            <button onclick="increaseQuantity(${item.id})">+</button>
-                        </div>
-                    `;
+                    <h3>${item.name}</h3>
+                    <p>ราคา: ${item.price} บาท</p>
+                    <div class="quantity-control">
+                        <button onclick="decreaseQuantity(${item.id})">-</button>
+                        <span id="quantity-${item.id}">0</span>
+                        <button onclick="increaseQuantity(${item.id})">+</button>
+                    </div>
+                `;
                 menuContainer.appendChild(menuItem);
             });
         }
@@ -147,6 +147,31 @@
         function viewCart() {
             alert("คุณมีอาหารในตะกร้าดังนี้:\n" + cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n'));
         }
+
+        function submitOrder() {
+            const orderData = cart.map(item => ({
+                id: item.id,
+                quantity: item.quantity
+            }));
+
+            fetch('https://<YOUR_CLOUD_FUNCTION_URL>/createOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: liff.getProfile().userId,  // LINE userId จาก LIFF profile
+                    orderItems: orderData
+                })
+            }).then(response => {
+                if (response.ok) {
+                    alert("สั่งอาหารเรียบร้อยแล้ว");
+                } else {
+                    alert("เกิดข้อผิดพลาดในการสั่งอาหาร");
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
 
         renderMenu();
     </script>
