@@ -28,3 +28,20 @@ await request.post({
    client_secret: CHANNEL_SECRET
  } 
 })
+
+const functions = require('firebase-functions');
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+app.post('/createOrder', async (req, res) => {
+    const { userId, orderItems } = req.body;
+
+    // จัดการคำสั่งซื้อ เช่น ส่งข้อความไปยังพนักงาน
+    const message = `ลูกค้าสั่งอาหาร:\n${orderItems.map(item => `${item.id}: ${item.quantity} ชิ้น`).join('\n')}`;
+    // ส่งข้อความนี้ไปยังพนักงานหรือบันทึกในฐานข้อมูล
+
+    res.status(200).send("Order received");
+});
+
+exports.api = functions.https.onRequest(app);
