@@ -160,12 +160,14 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userId: liff.getProfile().userId,  // LINE userId จาก LIFF profile
+                    userId: liff.getProfile().userId,
                     orderItems: orderData
                 })
             }).then(response => {
                 if (response.ok) {
                     alert("สั่งอาหารเรียบร้อยแล้ว");
+                    cart = []; // ล้างตะกร้าหลังจากส่งคำสั่งซื้อ
+                    updateCartCount(); // อัปเดตจำนวนตะกร้า
                 } else {
                     alert("เกิดข้อผิดพลาดในการสั่งอาหาร");
                 }
@@ -173,6 +175,7 @@
                 console.error("Error:", error);
             });
         }
+
 
 
         renderMenu();
