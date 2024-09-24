@@ -37,9 +37,25 @@ app.use(express.json());
 app.post('/createOrder', async (req, res) => {
     const { userId, orderItems } = req.body;
 
-    // ®—¥°“√§” —Ëß´◊ÈÕ ‡™Ëπ  Ëß¢ÈÕ§«“¡‰ª¬—ßæπ—°ß“π
-    const message = `≈Ÿ°§È“ —ËßÕ“À“√:\n${orderItems.map(item => `${item.id}: ${item.quantity} ™‘Èπ`).join('\n')}`;
-    //  Ëß¢ÈÕ§«“¡π’È‰ª¬—ßæπ—°ß“πÀ√◊Õ∫—π∑÷°„π∞“π¢ÈÕ¡Ÿ≈
+    // „ÑëÁ°ÄÈ¢ê„Å≥ÊÅÉÁëôÓÇîÊ©• ÂóíÈü´ Áñè–ëÊ©•„Åß‰ºäÊµ†Âçµ–¨ÂØ°¬®Â§ú
+    const message = `Âà®¬∑Ê©êÊÅÉÁëôÈ∏µËâòÔøΩ:\n${orderItems.map(item => `${item.id}: ${item.quantity} ÓÄ≥Ê•£`).join('\n')}`;
+    // Áñè–ëÊ©•„Åß‰ºäÊãêÊÆáÂÆ¶Â≠¶Á´üÈÄâ–±È°æÁ±≥ÁßÉÂéãÂàÜ¬∞Êã±Â§ú„à§ÂúüÂÄ•
+
+    res.status(200).send("Order received");
+});
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+app.post('/createOrder', async (req, res) => {
+    const { userId, orderItems } = req.body;
+
+    // ‡∏ö‡∏±‡∏ô‡∏ó‡∏∂‡∏Å‡∏Ñ‡∏≥‡∏™‡∏±‡πà‡∏á‡∏ã‡∏∑‡πâ‡∏≠‡πÉ‡∏ô Firestore
+    const orderRef = admin.firestore().collection('orders');
+    await orderRef.add({
+        userId,
+        orderItems,
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
+    });
 
     res.status(200).send("Order received");
 });
