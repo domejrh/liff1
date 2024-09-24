@@ -87,6 +87,8 @@
         🛒
     </div>
 
+    <button class="button" onclick="submitOrder()">ส่งคำสั่งซื้อ</button>
+
     <script>
         const menuItems = [
             { id: 1, name: "อาหาร A", price: 100 },
@@ -103,14 +105,14 @@
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('menu-item');
                 menuItem.innerHTML = `
-                        <h3>${item.name}</h3>
-                        <p>ราคา: ${item.price} บาท</p>
-                        <div class="quantity-control">
-                            <button onclick="decreaseQuantity(${item.id})">-</button>
-                            <span id="quantity-${item.id}">0</span>
-                            <button onclick="increaseQuantity(${item.id})">+</button>
-                        </div>
-                    `;
+                            <h3>${item.name}</h3>
+                            <p>ราคา: ${item.price} บาท</p>
+                            <div class="quantity-control">
+                                <button onclick="decreaseQuantity(${item.id})">-</button>
+                                <span id="quantity-${item.id}">0</span>
+                                <button onclick="increaseQuantity(${item.id})">+</button>
+                            </div>
+                        `;
                 menuContainer.appendChild(menuItem);
             });
         }
@@ -160,12 +162,14 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userId: liff.getProfile().userId,  // LINE userId จาก LIFF profile
+                    userId: liff.getProfile().userId,
                     orderItems: orderData
                 })
             }).then(response => {
                 if (response.ok) {
                     alert("สั่งอาหารเรียบร้อยแล้ว");
+                    cart = []; // ล้างตะกร้าหลังจากส่งคำสั่งซื้อ
+                    updateCartCount(); // อัปเดตจำนวนตะกร้า
                 } else {
                     alert("เกิดข้อผิดพลาดในการสั่งอาหาร");
                 }
@@ -173,6 +177,7 @@
                 console.error("Error:", error);
             });
         }
+
 
 
         renderMenu();
