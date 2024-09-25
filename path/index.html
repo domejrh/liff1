@@ -89,10 +89,10 @@
 
     <script>
         const menuItems = [
-            { id: 1, name: "อาหาร A", price: 100 },
-            { id: 2, name: "อาหาร B", price: 150 },
-            { id: 3, name: "อาหาร C", price: 120 },
-            { id: 4, name: "อาหาร D", price: 200 }
+            { id: 1, name: "A", price: 100 },
+            { id: 2, name: "B", price: 150 },
+            { id: 3, name: "C", price: 120 },
+            { id: 4, name: "D", price: 200 }
         ];
 
         let cart = [];
@@ -145,12 +145,12 @@
         }
 
         function viewCart() {
-            alert("คุณมีอาหารในตะกร้าดังนี้:\n" + cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n'));
+            alert("You have the following food in your basket::\n" + cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n'));
         }
 
         function viewCart() {
             if (cart.length === 0) {
-                alert("ตะกร้าว่างเปล่า");
+                alert("Empty");
                 return;
             }
 
@@ -164,20 +164,20 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    message: `ลูกค้าสั่งอาหาร:\n${orderDetails}` // ข้อความที่จะแสดงใน LINE
+                    message: `Customer orders food:\n${orderDetails}` // ข้อความที่จะแสดงใน LINE
                 })
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {  // ตรวจสอบว่าข้อมูลตอบกลับจาก Cloud Function มี success หรือไม่
-                        alert('สั่งอาหารสำเร็จ!');
+                        alert('Success');
                     } else {
-                        alert('เกิดข้อผิดพลาดในการสั่งอาหาร');
+                        alert('There was an error ordering food.');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('เกิดข้อผิดพลาดในการสั่งอาหาร');
+                    alert('There was an error ordering food.');
                 });
         }
 
