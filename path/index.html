@@ -87,13 +87,12 @@
         🛒
     </div>
 
-    <button class="button" onclick="submitOrder()">ส่งคำสั่งซื้อ</button>
-
     <script>
         const menuItems = [
             { id: 1, name: "อาหาร A", price: 100 },
             { id: 2, name: "อาหาร B", price: 150 },
-            { id: 3, name: "อาหาร C", price: 120 }
+            { id: 3, name: "อาหาร C", price: 120 },
+            { id: 4, name: "อาหาร D", price: 200 }
         ];
 
         let cart = [];
@@ -104,14 +103,14 @@
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('menu-item');
                 menuItem.innerHTML = `
-                            <h3>${item.name}</h3>
-                            <p>ราคา: ${item.price} บาท</p>
-                            <div class="quantity-control">
-                                <button onclick="decreaseQuantity(${item.id})">-</button>
-                                <span id="quantity-${item.id}">0</span>
-                                <button onclick="increaseQuantity(${item.id})">+</button>
-                            </div>
-                        `;
+                        <h3>${item.name}</h3>
+                        <p>ราคา: ${item.price} บาท</p>
+                        <div class="quantity-control">
+                            <button onclick="decreaseQuantity(${item.id})">-</button>
+                            <span id="quantity-${item.id}">0</span>
+                            <button onclick="increaseQuantity(${item.id})">+</button>
+                        </div>
+                    `;
                 menuContainer.appendChild(menuItem);
             });
         }
@@ -149,32 +148,37 @@
             alert("คุณมีอาหารในตะกร้าดังนี้:\n" + cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n'));
         }
 
-        function submitOrder() {
-            const orderData = cart.map(item => ({
-                id: item.id,
-                quantity: item.quantity
-            }));
+        function viewCart() {
+            if (cart.length === 0) {
+                alert("ตะกร้าว่างเปล่า");
+                return;
+            }
 
-            fetch('https://2770-171-96-204-194.ngrok-free.app/back-end-senior/us-central1/createOrder', {
+            // สร้างข้อความที่จะแสดงผลใน LINE
+            const orderDetails = cart.map(item => `${item.name}: ${item.quantity} ชิ้น`).join('\n');
+
+            // ส่งคำสั่งซื้อไปยัง Cloud Function
+            fetch('https://97e2-171-96-204-194.ngrok-free.app/back-end-senior/us-central1/orderFood', {  // URL ของ Cloud Function ที่จะเชื่อมกับ LINE API
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    userId: liff.getProfile().userId,
-                    orderItems: orderData
+                    message: `ลูกค้าสั่งอาหาร:\n${orderDetails}` // ข้อความที่จะแสดงใน LINE
                 })
-            }).then(response => {
-                if (response.ok) {
-                    alert("สั่งอาหารเรียบร้อยแล้ว");
-                    cart = []; // ล้างตะกร้าหลังจากส่งคำสั่งซื้อ
-                    updateCartCount(); // อัปเดตจำนวนตะกร้า
-                } else {
-                    alert("เกิดข้อผิดพลาดในการสั่งอาหาร");
-                }
-            }).catch(error => {
-                console.error("Error:", error);
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {  // ตรวจสอบว่าข้อมูลตอบกลับจาก Cloud Function มี success หรือไม่
+                        alert('สั่งอาหารสำเร็จ!');
+                    } else {
+                        alert('เกิดข้อผิดพลาดในการสั่งอาหาร');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('เกิดข้อผิดพลาดในการสั่งอาหาร');
+                });
         }
 
 
