@@ -28,36 +28,3 @@ await request.post({
    client_secret: CHANNEL_SECRET
  } 
 })
-
-const functions = require('firebase-functions');
-const express = require('express');
-const app = express();
-app.use(express.json());
-
-app.post('/createOrder', async (req, res) => {
-    const { userId, orderItems } = req.body;
-
-    // ㄑ础颐び恃瑙橥 嗒韫 疏Б橥で伊浠卵Ь寡¨夜
-    const message = `刨·橐恃瑙鸵艘�:\n${orderItems.map(item => `${item.id}: ${item.quantity} 楣`).join('\n')}`;
-    // 疏Б橥で伊拐殇宦学竟选б顾米秃压分°拱夜㈤土倥
-
-    res.status(200).send("Order received");
-});
-const admin = require('firebase-admin');
-admin.initializeApp();
-
-app.post('/createOrder', async (req, res) => {
-    const { userId, orderItems } = req.body;
-
-    // บันทึกคำสั่งซื้อใน Firestore
-    const orderRef = admin.firestore().collection('orders');
-    await orderRef.add({
-        userId,
-        orderItems,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
-    });
-
-    res.status(200).send("Order received");
-});
-
-exports.api = functions.https.onRequest(app);
