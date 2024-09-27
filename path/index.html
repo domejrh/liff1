@@ -158,7 +158,7 @@
             const orderDetails = cart.map(item => `${item.name}: ${item.quantity}`).join('\n');
 
             // ส่งคำสั่งซื้อไปยัง Cloud Function
-            fetch(' https://8b84-171-96-204-194.ngrok-free.app/back-end-senior/us-central1/orderFood', {  // URL ของ Cloud Function ที่จะเชื่อมกับ LINE API
+            fetch(' https://d472-171-96-204-194.ngrok-free.app/back-end-senior/us-central1/orderFood', {  // URL ของ Cloud Function ที่จะเชื่อมกับ LINE API
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
