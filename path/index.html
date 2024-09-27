@@ -144,9 +144,9 @@
             document.getElementById('cartCount').textContent = cartCount;
         }
 
-        function viewCart() {
-            alert("You have the following food in your basket::\n" + cart.map(item => `${item.name}: ${item.quantity}`).join('\n'));
-        }
+        //function viewCart() {
+        //    alert("You have the following food in your basket::\n" + cart.map(item => `${item.name}: ${item.quantity}`).join('\n'));
+        //}
 
         function viewCart() {
             if (cart.length === 0) {
@@ -177,7 +177,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('There was an error.');
+                    alert('There was an error ordering food.');
                 });
         }
 
